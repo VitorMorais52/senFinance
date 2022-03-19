@@ -1,25 +1,19 @@
-import React, { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import Modal from "react-modal";
 
 import { useTransactions } from "../../../hooks/useTransactions";
 import { useTransactionModal } from "../../../hooks/useTransactionModal";
+
+import { Transaction } from "../../../types/transaction";
 
 import closeImg from "../../../assets/close.svg";
 import incomeImg from "../../../assets/income.svg";
 import outcomeImg from "../../../assets/outcome.svg";
 
 import "./index.css";
+import { parseCurrencyToFloat } from "../../../utils/formatData";
 
-type Transaction = {
-  id: number;
-  title: string;
-  amount: number;
-  type: string;
-  category: string;
-  createdAt: string;
-};
-
-export function NewTransactionModal() {
+export function TransactionModal() {
   const {
     handleCloseTransactionModal: onRequestClose,
     isTransactionModalOpen: isOpen,
@@ -30,7 +24,7 @@ export function NewTransactionModal() {
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [type, setType] = useState("deposit");
 
   function submit(e: FormEvent) {
@@ -39,34 +33,32 @@ export function NewTransactionModal() {
     else handleCreateNewTransaction();
   }
 
-  function setFields(transaction?: Transaction) {
-    setTitle(transaction?.title || "");
-    setAmount(transaction?.amount || 0);
-    setCategory(transaction?.category || "");
-    setType(transaction?.type || "deposit");
-  }
-
   async function handleCreateNewTransaction() {
-    await createTransaction({ title, category, amount, type });
+    const amountFormatted = parseCurrencyToFloat(amount);
+    await createTransaction({ title, category, amount: amountFormatted, type });
     setFields();
     onRequestClose();
   }
 
   async function handleEditTransaction() {
+    const amountFormatted = parseCurrencyToFloat(amount);
+
     if (transactionEdit)
       await editTransaction({
         ...transactionEdit,
         title,
         category,
-        amount,
+        amount: amountFormatted,
         type,
       });
-
-    setTitle("");
-    setAmount(0);
-    setCategory("");
-    setType("deposit");
     onRequestClose();
+  }
+
+  function setFields(transaction?: Transaction) {
+    setTitle(transaction?.title || "");
+    setAmount((transaction?.amount || "").toString());
+    setCategory(transaction?.category || "");
+    setType(transaction?.type || "deposit");
   }
 
   useEffect(() => {
@@ -93,11 +85,15 @@ export function NewTransactionModal() {
           placeholder="Titulo"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
         <input
+          type="text"
           placeholder="Valor"
           value={amount}
-          onChange={(e) => setAmount(Number(e.target.value))}
+          onChange={(e) => setAmount(e.target.value)}
+          pattern="(?:\.|,|[0-9])*"
+          required
         />
         <div className="transactionTypeContainer">
           <button
@@ -105,7 +101,7 @@ export function NewTransactionModal() {
             type="button"
             onClick={() => setType("deposit")}
           >
-            <img className="img-type" src={incomeImg} alt="Entrada" />
+            <img className="img-type" src={incomeImg} alt="Deposit icon" />
             <span>Entrada</span>
           </button>
           <button
@@ -113,7 +109,7 @@ export function NewTransactionModal() {
             className={`radioBox ${type === "withdraw" ? type : "unselected"}`}
             onClick={() => setType("withdraw")}
           >
-            <img className="img-type" src={outcomeImg} alt="Saída" />
+            <img className="img-type" src={outcomeImg} alt="Withdraw icon" />
             <span>Saída</span>
           </button>
         </div>
@@ -121,11 +117,14 @@ export function NewTransactionModal() {
           placeholder="Categoria"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          required
         />
-        <button type="submit">Cadastrar</button>
+        <button type="submit">
+          {transactionEdit ? "Editar" : "Cadastrar"}
+        </button>
       </form>
     </Modal>
   );
 }
 
-export default NewTransactionModal;
+export default TransactionModal;

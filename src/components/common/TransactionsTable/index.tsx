@@ -1,19 +1,14 @@
 import { useTransactions } from "../../../hooks/useTransactions";
 import { useTransactionModal } from "../../../hooks/useTransactionModal";
 
+import { Transaction } from "../../../types/transaction";
+
+import { dateFormat, parseToCurrency } from "../../../utils/formatData";
+
 import deleteIcon from "../../../assets/delete.svg";
 import editIcon from "../../../assets/edit.svg";
 
 import "./index.css";
-
-type Transaction = {
-  id: number;
-  title: string;
-  amount: number;
-  type: string;
-  category: string;
-  createdAt: string;
-};
 
 function TransactionsTable() {
   const { transactions, removeTransaction, setTransactionEdit } =
@@ -42,17 +37,10 @@ function TransactionsTable() {
             <tr key={transaction.id}>
               <td>{transaction.title}</td>
               <td className={transaction.type + "-table"}>
-                {new Intl.NumberFormat("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(transaction.amount)}
+                {parseToCurrency(transaction.amount)}
               </td>
               <td>{transaction.category}</td>
-              <td>
-                {new Intl.DateTimeFormat("pt-br").format(
-                  new Date(transaction.createdAt)
-                )}
-              </td>
+              <td>{dateFormat(transaction.createdAt)}</td>
               <td>
                 <button
                   type="button"

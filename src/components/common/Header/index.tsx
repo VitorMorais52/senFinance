@@ -7,7 +7,7 @@ function Header() {
   return (
     <header className="container">
       <div className="content">
-        <h1>Sen Finança</h1>
+        <h1>SenFinance</h1>
         <button type="button" onClick={handleOpenTransactionModal}>
           Nova transação
         </button>
