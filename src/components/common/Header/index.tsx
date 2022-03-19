@@ -1,15 +1,19 @@
 import "./index.css";
 
-interface HeaderProps {}
+type HeaderProps = {
+  onOpenNewTransactionModal: () => void;
+};
 
-function Header({}: HeaderProps) {
+function Header({ onOpenNewTransactionModal }: HeaderProps) {
   return (
-    <div className="container">
+    <header className="container">
       <div className="content">
         <h1>Sen Finança</h1>
-        <button type="button">Nova transação</button>
+        <button type="button" onClick={onOpenNewTransactionModal}>
+          Nova transação
+        </button>
       </div>
-    </div>
+    </header>
   );
 }
 
