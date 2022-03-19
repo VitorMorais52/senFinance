@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import { Transaction } from "../types/transaction";
 
 type TransactionInput = Omit<Transaction, "id" | "createdAt">;
@@ -40,7 +40,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     const newTransactions = transactions;
     newTransactions[indexEdit] = { ...transaction };
 
-    setTransactions(newTransactions);
+    setTransactions([...newTransactions]);
   }
 
   async function removeTransaction(id: number) {
@@ -48,6 +48,22 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       transactions.filter((transaction) => transaction.id !== id)
     );
   }
+
+  useEffect(() => {
+    const transactionsStorage = localStorage.getItem(
+      "@SenFinance:transactions"
+    );
+    if (transactionsStorage) {
+      setTransactions(JSON.parse(transactionsStorage));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "@SenFinance:transactions",
+      JSON.stringify(transactions)
+    );
+  }, [transactions]);
 
   return (
     <TransactionsContext.Provider
