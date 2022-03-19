@@ -1,6 +1,8 @@
 import { FormEvent, useState } from "react";
 import Modal from "react-modal";
 
+import { useTransactions } from "../../../hooks/useTransactions";
+
 import closeImg from "../../../assets/close.svg";
 import incomeImg from "../../../assets/income.svg";
 import outcomeImg from "../../../assets/outcome.svg";
@@ -15,6 +17,8 @@ export function NewTransactionModal({
   isOpen,
   onRequestClose,
 }: NewTransactionModalProps) {
+  const { createTransaction } = useTransactions();
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState(0);
@@ -22,6 +26,8 @@ export function NewTransactionModal({
 
   async function handleCreateNewTransaction(e: FormEvent) {
     e.preventDefault();
+
+    await createTransaction({ title, category, amount, type });
 
     setTitle("");
     setAmount(0);
@@ -42,7 +48,7 @@ export function NewTransactionModal({
         onClick={onRequestClose}
         className="react-modal-close"
       >
-        <img src={closeImg} alt="Fechar modal" />
+        <img className="img-type" src={closeImg} alt="Fechar modal" />
       </button>
       <form onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar transação</h2>
@@ -62,7 +68,7 @@ export function NewTransactionModal({
             type="button"
             onClick={() => setType("deposit")}
           >
-            <img src={incomeImg} alt="Entrada" />
+            <img className="img-type" src={incomeImg} alt="Entrada" />
             <span>Entrada</span>
           </button>
           <button
