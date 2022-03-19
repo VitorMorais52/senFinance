@@ -1,0 +1,50 @@
+.container-transactions-table {
+  margin-top: 4rem;
+}
+
+table {
+  width: 100%;
+  border-spacing: 0 0.5rem;
+}
+th {
+  color: var(--text-body);
+  font-weight: 400;
+  padding: 1rem 2rem;
+  text-align: left;
+  line-height: 1.5rem;
+}
+
+td {
+  padding: 1rem 2rem;
+  border: 0;
+  background: var(--shape);
+  color: var(--text-body);
+  border-radius: 0.25rem;
+}
+
+.deposit-table {
+  color: var(--green);
+}
+
+.withdraw-table {
+  color: var(--red);
+}
+
+.button-handle-transaction {
+  border: 0;
+  background: transparent;
+  transition: filter 0.2s;
+}
+
+.button-handle-transaction:hover {
+  filter: opacity(0.3);
+}
+
+.img-button-transaction {
+  width: 20px;
+  height: 20px;
+}
+
+td:first-child {
+  color: var(--text-title);
+}

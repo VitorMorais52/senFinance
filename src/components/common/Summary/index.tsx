@@ -27,7 +27,6 @@ function Summary() {
     }
   );
 
-  console.log("transactions", transactions);
   return (
     <div className="container-summary">
       <div className="card">

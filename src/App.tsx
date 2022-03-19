@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext } from "react";
 import Modal from "react-modal";
 
-import { TransactionsProvider } from "./hooks/useTransactions";
+import { TransactionsProvider, useTransactions } from "./hooks/useTransactions";
+import { TransactionModalProvider } from "./hooks/useTransactionModal";
 
 import Header from "./components/common/Header";
 import Dashboard from "./components/pages/Dashboard";
@@ -13,26 +14,15 @@ import "./App.css";
 Modal.setAppElement("#root");
 
 function App() {
-  const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
-    useState(false);
-
-  function handleOpenNewTransactionModal() {
-    setIsNewTransactionModalOpen(true);
-  }
-
-  function handleCloseNewTransactionModal() {
-    setIsNewTransactionModalOpen(false);
-  }
-
+  const { transactionEdit } = useTransactions();
   return (
     <div className="App">
       <TransactionsProvider>
-        <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
-        <Dashboard />
-        <NewTransactionModal
-          isOpen={isNewTransactionModalOpen}
-          onRequestClose={handleCloseNewTransactionModal}
-        />
+        <TransactionModalProvider>
+          <Header />
+          <Dashboard />
+          <NewTransactionModal />
+        </TransactionModalProvider>
       </TransactionsProvider>
     </div>
   );

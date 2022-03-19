@@ -1,7 +1,8 @@
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Modal from "react-modal";
 
 import { useTransactions } from "../../../hooks/useTransactions";
+import { useTransactionModal } from "../../../hooks/useTransactionModal";
 
 import closeImg from "../../../assets/close.svg";
 import incomeImg from "../../../assets/income.svg";
@@ -9,25 +10,46 @@ import outcomeImg from "../../../assets/outcome.svg";
 
 import "./index.css";
 
-interface NewTransactionModalProps {
-  isOpen: boolean;
-  onRequestClose: () => void;
-}
-export function NewTransactionModal({
-  isOpen,
-  onRequestClose,
-}: NewTransactionModalProps) {
-  const { createTransaction } = useTransactions();
+export function NewTransactionModal() {
+  const {
+    handleCloseTransactionModal: onRequestClose,
+    isTransactionModalOpen: isOpen,
+  } = useTransactionModal();
 
-  const [title, setTitle] = useState("");
+  const { createTransaction, transactionEdit, editTransaction } =
+    useTransactions();
+
+  const [title, setTitle] = useState(transactionEdit?.title || "");
+
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState("deposit");
 
-  async function handleCreateNewTransaction(e: FormEvent) {
+  function submit(e: FormEvent) {
     e.preventDefault();
+    if (transactionEdit) handleEditTransaction();
+    else handleCreateNewTransaction();
+  }
 
+  async function handleCreateNewTransaction() {
     await createTransaction({ title, category, amount, type });
+
+    setTitle("");
+    setAmount(0);
+    setCategory("");
+    setType("deposit");
+    onRequestClose();
+  }
+
+  async function handleEditTransaction() {
+    if (transactionEdit)
+      await editTransaction({
+        ...transactionEdit,
+        title,
+        category,
+        amount,
+        type,
+      });
 
     setTitle("");
     setAmount(0);
@@ -50,7 +72,7 @@ export function NewTransactionModal({
       >
         <img className="img-type" src={closeImg} alt="Fechar modal" />
       </button>
-      <form onSubmit={handleCreateNewTransaction}>
+      <form onSubmit={submit}>
         <h2>Cadastrar transação</h2>
         <input
           placeholder="Titulo"
@@ -76,7 +98,7 @@ export function NewTransactionModal({
             className={`radioBox ${type === "withdraw" ? type : "unselected"}`}
             onClick={() => setType("withdraw")}
           >
-            <img src={outcomeImg} alt="Saída" />
+            <img className="img-type" src={outcomeImg} alt="Saída" />
             <span>Saída</span>
           </button>
         </div>
