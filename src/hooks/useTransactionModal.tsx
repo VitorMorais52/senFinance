@@ -2,15 +2,6 @@ import { useState, createContext, useContext } from "react";
 
 import { useTransactions } from "../hooks/useTransactions";
 
-type Transaction = {
-  id: number;
-  title: string;
-  amount: number;
-  type: string;
-  category: string;
-  createdAt: string;
-};
-
 type TransactionModalProviderProps = {
   children: React.ReactNode;
 };
@@ -28,13 +19,14 @@ const TransactionModalContext = createContext<TransactionModalContextProps>(
 export function TransactionModalProvider({
   children,
 }: TransactionModalProviderProps) {
+  const { setTransactionEdit } = useTransactions();
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-
   function handleOpenTransactionModal() {
     setIsTransactionModalOpen(true);
   }
 
   function handleCloseTransactionModal() {
+    setTransactionEdit(undefined);
     setIsTransactionModalOpen(false);
   }
 

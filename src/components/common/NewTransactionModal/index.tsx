@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import Modal from "react-modal";
 
 import { useTransactions } from "../../../hooks/useTransactions";
@@ -10,6 +10,15 @@ import outcomeImg from "../../../assets/outcome.svg";
 
 import "./index.css";
 
+type Transaction = {
+  id: number;
+  title: string;
+  amount: number;
+  type: string;
+  category: string;
+  createdAt: string;
+};
+
 export function NewTransactionModal() {
   const {
     handleCloseTransactionModal: onRequestClose,
@@ -19,8 +28,7 @@ export function NewTransactionModal() {
   const { createTransaction, transactionEdit, editTransaction } =
     useTransactions();
 
-  const [title, setTitle] = useState(transactionEdit?.title || "");
-
+  const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState("deposit");
@@ -31,13 +39,16 @@ export function NewTransactionModal() {
     else handleCreateNewTransaction();
   }
 
+  function setFields(transaction?: Transaction) {
+    setTitle(transaction?.title || "");
+    setAmount(transaction?.amount || 0);
+    setCategory(transaction?.category || "");
+    setType(transaction?.type || "deposit");
+  }
+
   async function handleCreateNewTransaction() {
     await createTransaction({ title, category, amount, type });
-
-    setTitle("");
-    setAmount(0);
-    setCategory("");
-    setType("deposit");
+    setFields();
     onRequestClose();
   }
 
@@ -57,6 +68,10 @@ export function NewTransactionModal() {
     setType("deposit");
     onRequestClose();
   }
+
+  useEffect(() => {
+    setFields(transactionEdit);
+  }, [transactionEdit]);
 
   return (
     <Modal

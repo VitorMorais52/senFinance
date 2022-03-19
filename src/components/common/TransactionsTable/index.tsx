@@ -16,12 +16,8 @@ type Transaction = {
 };
 
 function TransactionsTable() {
-  const {
-    transactions,
-    removeTransaction,
-    transactionEdit,
-    setTransactionEdit,
-  } = useTransactions();
+  const { transactions, removeTransaction, setTransactionEdit } =
+    useTransactions();
   const { handleOpenTransactionModal } = useTransactionModal();
 
   function handleEditTransaction(transaction: Transaction) {
