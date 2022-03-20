@@ -69,3 +69,12 @@ td {
 td:first-child {
   color: var(--text-title);
 }
+
+.not-results {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.6;
+}
