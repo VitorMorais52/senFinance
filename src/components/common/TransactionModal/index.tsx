@@ -82,7 +82,7 @@ export function TransactionModal() {
       <form onSubmit={submit}>
         <h2>Cadastrar transação</h2>
         <input
-          placeholder="Titulo"
+          placeholder="Título"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
