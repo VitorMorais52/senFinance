@@ -14,8 +14,12 @@ import "./index.css";
 import { useState } from "react";
 
 function TransactionsTable() {
-  const { getFilteredTransactions, removeTransaction, setTransactionEdit } =
-    useTransactions();
+  const {
+    transactions,
+    getFilteredTransactions,
+    removeTransaction,
+    setTransactionEdit,
+  } = useTransactions();
   const { handleOpenTransactionModal } = useTransactionModal();
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
@@ -37,7 +41,7 @@ function TransactionsTable() {
 
   return (
     <>
-      {filteredTransactions.length > 0 ? (
+      {transactions.length > 0 ? (
         <div className="container-transactions-table">
           <FiltersModal
             isOpen={isFiltersModalOpen}
