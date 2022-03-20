@@ -71,7 +71,7 @@ export function FiltersModal({ isOpen, onRequestClose }: FiltersModalProps) {
       <div className="container-filters">
         <h2>Filtros</h2>
         {Object.entries(optionsFilters).map(([filter, options], index) => (
-          <div className="filter">
+          <div className="filter" key={filter}>
             <span>{filter === "type" ? "Tipo de entrada" : "Categoria"}</span>
             <select
               className="select"
@@ -81,7 +81,9 @@ export function FiltersModal({ isOpen, onRequestClose }: FiltersModalProps) {
               }
             >
               {options.map((option) => (
-                <option value={option}>{translateOptions(option)}</option>
+                <option key={option} value={option}>
+                  {translateOptions(option)}
+                </option>
               ))}
             </select>
           </div>
