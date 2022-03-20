@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useTransactions } from "../../../hooks/useTransactions";
 
 import { parseToCurrency } from "../../../utils/formatData";
@@ -12,22 +14,26 @@ function Summary() {
   const { getFilteredTransactions } = useTransactions();
 
   const filteredTransactions = getFilteredTransactions();
-  const summary = filteredTransactions.reduce(
-    (acc, transaction) => {
-      if (transaction.type === "deposit") {
-        acc.deposits += transaction.amount;
-        acc.total += transaction.amount;
-      } else {
-        acc.withdraws -= transaction.amount;
-        acc.total -= transaction.amount;
-      }
-      return acc;
-    },
-    {
-      deposits: 0,
-      withdraws: 0,
-      total: 0,
-    }
+  const summary = useMemo(
+    () =>
+      filteredTransactions.reduce(
+        (acc, transaction) => {
+          if (transaction.type === "deposit") {
+            acc.deposits += transaction.amount;
+            acc.total += transaction.amount;
+          } else {
+            acc.withdraws -= transaction.amount;
+            acc.total -= transaction.amount;
+          }
+          return acc;
+        },
+        {
+          deposits: 0,
+          withdraws: 0,
+          total: 0,
+        }
+      ),
+    [filteredTransactions]
   );
 
   return (
