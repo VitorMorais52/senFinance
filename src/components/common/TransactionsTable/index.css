@@ -78,3 +78,7 @@ td:first-child {
   align-items: center;
   opacity: 0.6;
 }
+
+.not-results span {
+  text-align: center;
+}
