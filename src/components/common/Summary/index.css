@@ -5,6 +5,18 @@
   margin-top: -10rem;
 }
 
+@media (max-width: 840px) {
+  .container-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .container-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
 .card {
   background: var(--shape);
   padding: 1.5rem 2rem;

@@ -1,5 +1,6 @@
 .container-transactions-table {
   margin-top: 4rem;
+  overflow: auto;
 }
 
 .filters {
