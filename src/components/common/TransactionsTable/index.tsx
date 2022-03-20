@@ -5,15 +5,30 @@ import { Transaction } from "../../../types/transaction";
 
 import { dateFormat, parseToCurrency } from "../../../utils/formatData";
 
+import FiltersModal from "../FiltersModal";
+
 import deleteIcon from "../../../assets/delete.svg";
 import editIcon from "../../../assets/edit.svg";
 
 import "./index.css";
+import { useState } from "react";
 
 function TransactionsTable() {
-  const { transactions, removeTransaction, setTransactionEdit } =
+  const { getFilteredTransactions, removeTransaction, setTransactionEdit } =
     useTransactions();
   const { handleOpenTransactionModal } = useTransactionModal();
+
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+
+  const filteredTransactions = getFilteredTransactions();
+
+  function handleOpenFilterModal() {
+    setIsFiltersModalOpen(true);
+  }
+
+  function handleCloseFilterModal() {
+    setIsFiltersModalOpen(false);
+  }
 
   function handleEditTransaction(transaction: Transaction) {
     setTransactionEdit({ ...transaction });
@@ -22,6 +37,20 @@ function TransactionsTable() {
 
   return (
     <div className="container-transactions-table">
+      <FiltersModal
+        isOpen={isFiltersModalOpen}
+        onRequestClose={handleCloseFilterModal}
+      />
+      <div className="filters">
+        <button
+          type="button"
+          className="button-show-filter"
+          onClick={handleOpenFilterModal}
+        >
+          <span>Filtros</span>
+        </button>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -33,7 +62,7 @@ function TransactionsTable() {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
+          {filteredTransactions.map((transaction) => (
             <tr key={transaction.id}>
               <td>{transaction.title}</td>
               <td className={transaction.type + "-table"}>

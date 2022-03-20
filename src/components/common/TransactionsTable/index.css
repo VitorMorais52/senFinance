@@ -2,6 +2,26 @@
   margin-top: 4rem;
 }
 
+.filters {
+  color: var(--text-title);
+}
+
+.button-show-filter > span {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-filters {
+  background: green;
+}
+
+.content-filters.hidden {
+  visibility: hidden;
+  display: none;
+}
+
 table {
   width: 100%;
   border-spacing: 0 0.5rem;

@@ -3,6 +3,12 @@ import { Transaction } from "../types/transaction";
 
 type TransactionInput = Omit<Transaction, "id" | "createdAt">;
 
+type Filters = {
+  [key: string]: string;
+  type: string;
+  category: string;
+};
+
 type TransactionsProviderProps = {
   children: React.ReactNode;
 };
@@ -10,6 +16,9 @@ type TransactionsProviderProps = {
 type TransactionsContextData = {
   transactions: Transaction[];
   transactionEdit: Transaction | undefined;
+  getFilteredTransactions: () => Transaction[];
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
   setTransactionEdit: (transaction: Transaction | undefined) => void;
   createTransaction: (transaction: TransactionInput) => Promise<void>;
   editTransaction: (transaction: Transaction) => Promise<void>;
@@ -22,9 +31,30 @@ const TransactionsContext = createContext<TransactionsContextData>(
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [filters, setFilters] = useState<Filters>({
+    type: "all",
+    category: "all",
+  });
+
   const [transactionEdit, setTransactionEdit] = useState<
     Transaction | undefined
   >();
+
+  function getFilteredTransactions() {
+    let filteredTransactions = transactions;
+    if (filters.type !== "all") {
+      filteredTransactions = filteredTransactions.filter(
+        (transaction) => transaction.type === filters.type
+      );
+    }
+    if (filters.category !== "all") {
+      filteredTransactions = filteredTransactions.filter(
+        (transaction) => transaction.category === filters.category
+      );
+    }
+
+    return filteredTransactions;
+  }
 
   async function createTransaction(transaction: TransactionInput) {
     const id = transactions.length + 1;
@@ -71,6 +101,9 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         transactions,
         transactionEdit,
         setTransactionEdit,
+        filters,
+        setFilters,
+        getFilteredTransactions,
         createTransaction,
         editTransaction,
         removeTransaction,

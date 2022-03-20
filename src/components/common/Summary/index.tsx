@@ -8,9 +8,10 @@ import "./index.css";
 import { parseToCurrency } from "../../../utils/formatData";
 
 function Summary() {
-  const { transactions } = useTransactions();
+  const { getFilteredTransactions } = useTransactions();
 
-  const summary = transactions.reduce(
+  const filteredTransactions = getFilteredTransactions();
+  const summary = filteredTransactions.reduce(
     (acc, transaction) => {
       if (transaction.type === "deposit") {
         acc.deposits += transaction.amount;

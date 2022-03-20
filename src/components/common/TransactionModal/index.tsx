@@ -102,7 +102,7 @@ export function TransactionModal() {
             onClick={() => setType("deposit")}
           >
             <img className="img-type" src={incomeImg} alt="Deposit icon" />
-            <span>Entrada</span>
+            <span className="span-title">Entrada</span>
           </button>
           <button
             type="button"
@@ -110,7 +110,7 @@ export function TransactionModal() {
             onClick={() => setType("withdraw")}
           >
             <img className="img-type" src={outcomeImg} alt="Withdraw icon" />
-            <span>Saída</span>
+            <span className="span-title">Saída</span>
           </button>
         </div>
         <input

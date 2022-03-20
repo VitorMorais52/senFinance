@@ -1,0 +1,60 @@
+.container-filters {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: start;
+  margin: 1rem;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter + div {
+  margin-top: 1rem;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 200px;
+  border: none;
+  background: var(--blue-light);
+  border-radius: 4px;
+  color: white;
+  padding: 0.5rem;
+}
+
+option {
+  background: var(--blue-light);
+  color: white;
+}
+
+.button-filter {
+  width: 100%;
+  padding: 0 1.5rem;
+  height: 3rem;
+  background: var(--green);
+  color: #fff;
+  border-radius: 0.25rem;
+  border: 0;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  transition: filter 0.2s;
+}
+
+.button-filter:hover {
+  filter: brightness(0.9);
+}
+
+h2 {
+  width: 100%;
+  color: var(--text-title);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
