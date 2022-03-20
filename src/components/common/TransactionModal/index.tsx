@@ -6,12 +6,13 @@ import { useTransactionModal } from "../../../hooks/useTransactionModal";
 
 import { Transaction } from "../../../types/transaction";
 
+import { parseCurrencyToFloat } from "../../../utils/formatData";
+
 import closeImg from "../../../assets/close.svg";
 import incomeImg from "../../../assets/income.svg";
 import outcomeImg from "../../../assets/outcome.svg";
 
 import "./index.css";
-import { parseCurrencyToFloat } from "../../../utils/formatData";
 
 export function TransactionModal() {
   const {

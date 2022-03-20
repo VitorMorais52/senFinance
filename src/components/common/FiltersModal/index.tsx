@@ -1,11 +1,7 @@
-import { FormEvent, useState, useEffect, InputHTMLAttributes } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 
 import { useTransactions } from "../../../hooks/useTransactions";
-import { useTransactionModal } from "../../../hooks/useTransactionModal";
-
-import { Transaction } from "../../../types/transaction";
-import { parseCurrencyToFloat } from "../../../utils/formatData";
 
 import closeImg from "../../../assets/close.svg";
 

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useTransactions } from "../../../hooks/useTransactions";
 import { useTransactionModal } from "../../../hooks/useTransactionModal";
 
@@ -11,7 +13,6 @@ import deleteIcon from "../../../assets/delete.svg";
 import editIcon from "../../../assets/edit.svg";
 
 import "./index.css";
-import { useState } from "react";
 
 function TransactionsTable() {
   const {
