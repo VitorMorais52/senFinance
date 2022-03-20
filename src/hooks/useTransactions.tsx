@@ -76,7 +76,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
 
   async function createTransaction(transaction: TransactionInput) {
     const id = transactions.length + 1;
-    const createdAt = getDate();
+    const createdAt = dateFormatToCompare(getDate());
     setTransactions([...transactions, { id, createdAt, ...transaction }]);
   }
 
@@ -111,7 +111,6 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       "@SenFinance:transactions",
       JSON.stringify(transactions)
     );
-    console.log(transactions);
   }, [transactions]);
 
   return (
