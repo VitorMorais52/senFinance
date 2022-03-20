@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect, InputHTMLAttributes } from "react";
 import Modal from "react-modal";
 
 import { useTransactions } from "../../../hooks/useTransactions";
@@ -50,6 +50,12 @@ export function FiltersModal({ isOpen, onRequestClose }: FiltersModalProps) {
     }
   }
 
+  const handleInputDate =
+    (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setFilters({ ...filters, [field]: value });
+    };
+
   useEffect(() => {
     getOptionsFilters();
   }, [transactions]);
@@ -88,6 +94,23 @@ export function FiltersModal({ isOpen, onRequestClose }: FiltersModalProps) {
             </select>
           </div>
         ))}
+        <div className="filter">
+          <span>Data</span>
+          <input
+            type="date"
+            className="input-date"
+            value={filters.dateMin}
+            onChange={handleInputDate("dateMin")}
+          />
+          <span className="span-date">até</span>
+          <input
+            type="date"
+            className="input-date"
+            onChange={handleInputDate("dateMax")}
+            value={filters.dateMax}
+            pattern="dd-MM-yyyy"
+          />
+        </div>
       </div>
     </Modal>
   );

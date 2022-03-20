@@ -3,7 +3,7 @@ import { useTransactionModal } from "../../../hooks/useTransactionModal";
 
 import { Transaction } from "../../../types/transaction";
 
-import { dateFormat, parseToCurrency } from "../../../utils/formatData";
+import { dateFormatToShow, parseToCurrency } from "../../../utils/formatData";
 
 import FiltersModal from "../FiltersModal";
 
@@ -75,7 +75,7 @@ function TransactionsTable() {
                     {parseToCurrency(transaction.amount)}
                   </td>
                   <td>{transaction.category}</td>
-                  <td>{dateFormat(transaction.createdAt)}</td>
+                  <td>{dateFormatToShow(transaction.createdAt)}</td>
                   <td>
                     <button
                       type="button"

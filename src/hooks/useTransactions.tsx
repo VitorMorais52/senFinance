@@ -1,5 +1,7 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import { Transaction } from "../types/transaction";
+import { dateFormatToCompare } from "../utils/formatData";
+import { getDate } from "../utils/genericFuntions";
 
 type TransactionInput = Omit<Transaction, "id" | "createdAt">;
 
@@ -34,6 +36,8 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [filters, setFilters] = useState<Filters>({
     type: "all",
     category: "all",
+    dateMin: "",
+    dateMax: getDate(),
   });
 
   const [transactionEdit, setTransactionEdit] = useState<
@@ -52,13 +56,27 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         (transaction) => transaction.category === filters.category
       );
     }
+    if (filters.dateMin !== "" && new Date(filters.dateMin)) {
+      const dateStringFormatted = dateFormatToCompare(filters.dateMin);
+      const dateMin = new Date(dateStringFormatted);
+      filteredTransactions = filteredTransactions.filter(
+        (transaction) => new Date(transaction.createdAt) >= dateMin
+      );
+    }
+    if (filters.dateMax !== "" && new Date(filters.dateMax)) {
+      const dateStringFormatted = dateFormatToCompare(filters.dateMax);
+      const dateMax = new Date(dateStringFormatted);
+      filteredTransactions = filteredTransactions.filter(
+        (transaction) => new Date(transaction.createdAt) <= dateMax
+      );
+    }
 
     return filteredTransactions;
   }
 
   async function createTransaction(transaction: TransactionInput) {
     const id = transactions.length + 1;
-    const createdAt = new Date().toString();
+    const createdAt = getDate();
     setTransactions([...transactions, { id, createdAt, ...transaction }]);
   }
 
@@ -93,6 +111,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       "@SenFinance:transactions",
       JSON.stringify(transactions)
     );
+    console.log(transactions);
   }, [transactions]);
 
   return (
