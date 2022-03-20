@@ -16,11 +16,7 @@ export const dateFormatToShow = (data: string) => {
 
 export const dateFormatToCompare = (data: string) => {
   //MM-dd-yyyy
-  const dateFragmented = data.split("-").reverse();
-  const dateFormatted = [
-    dateFragmented[1],
-    dateFragmented[0],
-    dateFragmented[2],
-  ].join("-");
+  const [day, month, year] = data.split("-").reverse();
+  const dateFormatted = [month, day, year].join("-");
   return dateFormatted;
 };
