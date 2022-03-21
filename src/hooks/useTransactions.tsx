@@ -1,8 +1,8 @@
 import { useState, createContext, useContext, useEffect } from "react";
 
 import { Transaction } from "../types/transaction";
+import { dateUniversalFormat } from "../utils/formatData";
 
-import { dateFormatToCompare } from "../utils/formatData";
 import { getDate } from "../utils/genericFuntions";
 
 type TransactionInput = Omit<Transaction, "id" | "createdAt">;
@@ -59,17 +59,15 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       );
     }
     if (filters.dateMin !== "" && new Date(filters.dateMin)) {
-      const dateStringFormatted = dateFormatToCompare(filters.dateMin);
-      const dateMin = new Date(dateStringFormatted);
+      const dateMin = dateUniversalFormat(filters.dateMin);
       filteredTransactions = filteredTransactions.filter(
-        (transaction) => new Date(transaction.createdAt) >= dateMin
+        (transaction) => dateUniversalFormat(transaction.createdAt) >= dateMin
       );
     }
     if (filters.dateMax !== "" && new Date(filters.dateMax)) {
-      const dateStringFormatted = dateFormatToCompare(filters.dateMax);
-      const dateMax = new Date(dateStringFormatted);
+      const dateMax = dateUniversalFormat(filters.dateMax);
       filteredTransactions = filteredTransactions.filter(
-        (transaction) => new Date(transaction.createdAt) <= dateMax
+        (transaction) => dateUniversalFormat(transaction.createdAt) <= dateMax
       );
     }
 
@@ -78,7 +76,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
 
   async function createTransaction(transaction: TransactionInput) {
     const id = transactions.length + 1;
-    const createdAt = dateFormatToCompare(getDate());
+    const createdAt = getDate();
     setTransactions([...transactions, { id, createdAt, ...transaction }]);
   }
 

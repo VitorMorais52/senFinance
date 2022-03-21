@@ -69,7 +69,7 @@ function TransactionsTable() {
               </tr>
             </thead>
             <tbody>
-              {filteredTransactions.map((transaction) => (
+              {filteredTransactions?.map((transaction) => (
                 <tr key={transaction.id}>
                   <td>{transaction.title}</td>
                   <td className={transaction.type + "-table"}>

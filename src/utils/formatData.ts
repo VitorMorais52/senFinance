@@ -11,12 +11,13 @@ export const parseCurrencyToFloat = (data: string) => {
 
 export const dateFormatToShow = (data: string) => {
   //dd/MM/yyyy
-  return new Intl.DateTimeFormat("pt-br").format(new Date(data));
+  const date = dateUniversalFormat(data);
+  return new Intl.DateTimeFormat("pt-br").format(date);
 };
 
-export const dateFormatToCompare = (data: string) => {
-  //MM-dd-yyyy
-  const [day, month, year] = data.split("-").reverse();
-  const dateFormatted = [month, day, year].join("-");
-  return dateFormatted;
+export const dateUniversalFormat = (data: string): Date => {
+  const [year, month, day] = data.split("-");
+  const dateFormatted = [year, month, day].join("-");
+
+  return new Date(dateFormatted + " 00:00");
 };
